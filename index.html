@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Happy Birthday My Love</title>
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500;700&display=swap" rel="stylesheet">
+
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: 'Dancing Script', cursive;
+    background: linear-gradient(135deg, #ffe5ec, #ffdce0, #ffeef0);
+    overflow: hidden;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    transition: background 2s ease;
+  }
+
+  h1, p {
+    color: #5b2c2c;
+    text-align: center;
+    margin: 0.5em 0;
+  }
+
+  .balloon {
+    width: 70px;
+    height: 90px;
+    border-radius: 50% 50% 45% 55% / 60% 60% 40% 40%;
+    position: absolute;
+    bottom: -150px;
+    box-shadow: inset -5px -10px 0 rgba(0,0,0,0.1);
+    opacity: 0.9;
+    animation: floatUp 7s ease-in-out forwards;
+  }
+
+  @keyframes floatUp {
+    0% { transform: translateY(0) scale(1); opacity: 1; }
+    80% { transform: translateY(-90vh) scale(1.05); opacity: 1; }
+    100% { transform: translateY(-110vh) scale(0.8); opacity: 0; }
+  }
+
+  .fadeOut {
+    animation: fadeOut 1.5s forwards;
+  }
+
+  @keyframes fadeOut {
+    to { opacity: 0; visibility: hidden; }
+  }
+
+  #passwordPage, #messagePage {
+    text-align: center;
+    display: none;
+    animation: fadeIn 1.5s ease forwards;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  input[type="password"] {
+    padding: 10px;
+    font-size: 1em;
+    border: 1px solid #b08968;
+    border-radius: 10px;
+    outline: none;
+    background-color: #fff5f5;
+    margin-bottom: 10px;
+    font-family: 'Dancing Script', cursive;
+  }
+
+  button {
+    background-color: #ffcad4;
+    border: none;
+    border-radius: 15px;
+    padding: 10px 25px;
+    font-size: 1.1em;
+    cursor: pointer;
+    font-family: 'Dancing Script', cursive;
+    transition: all 0.3s ease;
+    color: #5b2c2c;
+  }
+
+  button:hover {
+    background-color: #ffc1cc;
+    transform: scale(1.05);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  }
+
+  audio {
+    margin-top: 20px;
+    filter: drop-shadow(0px 2px 5px rgba(0,0,0,0.1));
+    border-radius: 10px;
+  }
+
+  .glow {
+    animation: softGlow 2s infinite alternate;
+  }
+
+  @keyframes softGlow {
+    from { text-shadow: 0 0 5px #ffd1dc; }
+    to { text-shadow: 0 0 15px #ffc1cc; }
+  }
+
+  .heartFloat {
+    position: absolute;
+    font-size: 1.2em;
+    animation: heartRise 4s ease-in forwards;
+  }
+
+  @keyframes heartRise {
+    from { transform: translateY(0) scale(0.8); opacity: 1; }
+    to { transform: translateY(-120vh) scale(1.2); opacity: 0; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Balloons -->
+<div id="balloonContainer"></div>
+
+<!-- Password Page -->
+<div id="passwordPage">
+  <h1 class="glow">💌 Enter the Secret Key</h1>
+  <input type="password" id="passwordInput" placeholder="Enter password..." />
+  <br />
+  <button onclick="checkPassword()">Unlock</button>
+</div>
+
+<!-- Message Page -->
+<div id="messagePage">
+  <h1 class="glow">Happiest Birthday My Love 🎂</h1>
+  <p>Many many happy returns of the day 💖<br />I love you forever.</p>
+  <audio controls>
+    <source src="iloveyou.mp3" type="audio/mpeg" />
+    Your browser does not support the audio element.
+  </audio>
+  <br /><br />
+  <button onclick="sendToWhatsApp()">This is the last present for the birthday girl 💝</button>
+</div>
+
+<script>
+  const colors = ['#ffb6c1', '#ffd1dc', '#ffe5ec', '#ffc1cc', '#fadadd'];
+  const container = document.getElementById('balloonContainer');
+
+  // Create floating balloons
+  for (let i = 0; i < 17; i++) {
+    const balloon = document.createElement('div');
+    balloon.classList.add('balloon');
+    balloon.style.left = Math.random() * 100 + 'vw';
+    balloon.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+    balloon.style.animationDelay = Math.random() * 3 + 's';
+    container.appendChild(balloon);
+  }
+
+  // Floating hearts when balloons disappear
+  function createHeart() {
+    const heart = document.createElement('div');
+    heart.classList.add('heartFloat');
+    heart.innerHTML = '💖';
+    heart.style.left = Math.random() * 100 + 'vw';
+    heart.style.animationDelay = Math.random() * 2 + 's';
+    document.body.appendChild(heart);
+    setTimeout(() => heart.remove(), 4000);
+  }
+
+  // After balloons animation ends → fade out → password page
+  setTimeout(() => {
+    container.classList.add('fadeOut');
+    for (let i = 0; i < 10; i++) setTimeout(createHeart, i * 300);
+    setTimeout(() => {
+      container.remove();
+      document.body.style.overflow = 'auto';
+      document.getElementById('passwordPage').style.display = 'block';
+    }, 1600);
+  }, 7500);
+
+  // Password check
+  function checkPassword() {
+    const input = document.getElementById('passwordInput').value.trim();
+    const correct = "18thofnovemberand3rdofdecember";
+    if (input === correct) {
+      document.getElementById('passwordPage').style.display = 'none';
+      document.getElementById('messagePage').style.display = 'block';
+    } else {
+      alert("Oops! That’s not the right key 💔");
+    }
+  }
+
+  // WhatsApp redirect
+  function sendToWhatsApp() {
+    const message = "Hey baby, I want my last present 💝";
+    const phoneNumber = "918850533457";
+    window.open(`https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`, '_blank');
+  }
+</script>
+</body>
+  </html>
